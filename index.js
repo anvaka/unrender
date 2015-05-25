@@ -18,6 +18,7 @@ function unrender(container, options) {
   };
 
   options = combineOptions(options);
+  var lastFrame;
 
   var scene = createScene();
   var camera = createCamera();
@@ -40,7 +41,7 @@ function unrender(container, options) {
   }
 
   function frame() {
-    requestAnimationFrame(frame);
+    lastFrame = requestAnimationFrame(frame);
     renderer.render(scene, camera);
     input.update(0.1);
   }
@@ -105,6 +106,7 @@ function unrender(container, options) {
 
   function stopEventsListening() {
     window.removeEventListener('resize', onWindowResize, false);
+    cancelAnimationFrame(lastFrame);
   }
 
   function onWindowResize() {
