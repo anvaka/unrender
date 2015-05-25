@@ -15,5 +15,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/anvaka/unrender"
+  },
+  "dependencies": {
+    "three": "^0.71.0",
+    "three.fly": "^0.1.4"
   }
 }
