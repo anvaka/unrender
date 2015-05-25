@@ -74,7 +74,7 @@ function unrender(container, options) {
   }
 
   function createCamera() {
-    var camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 2000);
+    var camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 20000);
     scene.add(camera);
 
     return camera;
