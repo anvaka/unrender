@@ -1,0 +1,19 @@
+{
+  "name": "unrender",
+  "version": "1.0.0",
+  "description": "Three.js renderer for large data set of points",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "renderer",
+    "three.js"
+  ],
+  "author": "Andrei Kashcha",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anvaka/unrender"
+  }
+}
