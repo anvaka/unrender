@@ -57,15 +57,14 @@ function unrender(container, options) {
   }
 
   function destroy() {
-    // todo: implement me:
-    // * remove renderer child
+    input.destroy();
     stopEventsListening();
+    container.removeChild(renderer.domElement);
   }
 
   function createScene() {
     var scene = new THREE.Scene();
     scene.sortObjects = false;
-
     return scene;
   }
 
