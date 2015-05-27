@@ -1,6 +1,7 @@
 var THREE = require('three');
 var combineOptions = require('./options.js');
 var createParticleView = require('./lib/particle-view.js');
+var createHitTest = require('./lib/hit-test.js');
 var flyControls = require('three.fly');
 
 // Expose three.js as well, so simple clients do not have to require it
@@ -14,7 +15,8 @@ function unrender(container, options) {
     scene: getScene,
     camera: getCamera,
     renderer: getRenderer,
-    particles: particles
+    particles: particles,
+    hitTest: getHitTest
   };
 
   options = combineOptions(options);
@@ -26,11 +28,18 @@ function unrender(container, options) {
   var particleView = createParticleView(scene);
   var input = createInputHandler();
 
+  // TODO: This doesn't seem to belong here... Not sure where to put it
+  var hitTest = createHitTest(particleView, container);
+
   startEventsListening();
 
   frame();
 
   return api;
+
+  function getHitTest() {
+    return hitTest;
+  }
 
   function createInputHandler() {
     var controls = flyControls(camera, container, THREE);
@@ -43,6 +52,7 @@ function unrender(container, options) {
   function frame() {
     lastFrame = requestAnimationFrame(frame);
     renderer.render(scene, camera);
+    hitTest.update(scene, camera);
     input.update(0.1);
   }
 
@@ -57,6 +67,7 @@ function unrender(container, options) {
   }
 
   function destroy() {
+    hitTest.destroy();
     input.destroy();
     stopEventsListening();
     container.removeChild(renderer.domElement);

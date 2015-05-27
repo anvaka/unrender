@@ -17,6 +17,7 @@
     "url": "https://github.com/anvaka/unrender"
   },
   "dependencies": {
+    "ngraph.events": "0.0.3",
     "three": "^0.71.0",
     "three.fly": "^0.1.4"
   }
