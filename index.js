@@ -112,6 +112,104 @@ function unrender(container, options) {
 
   function startEventsListening() {
     window.addEventListener('resize', onWindowResize, false);
+    hitTest.on('highlight', particleView.highlight);
+
+    //hitTest.on('rendertree', renderTree);
+  }
+
+  function renderTree(tree) {
+    var treeGeometry = new THREE.BufferGeometry();
+    var material = new THREE.LineBasicMaterial({
+      vertexColors: THREE.VertexColors
+    });
+    var octs = createOcts(tree);
+
+    var points = new Float32Array(octs);
+    var colors = createColors(points.length);
+
+    treeGeometry.addAttribute('position', new THREE.BufferAttribute(points, 3));
+    treeGeometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+    var edgeMesh = new THREE.Line(treeGeometry, material, THREE.LinePieces);
+    edgeMesh.frustumCulled = false;
+    scene.add(edgeMesh);
+  }
+
+  function createOcts(tree) {
+    var points = [];
+    var root = tree.getRoot();
+    addNode(points, root);
+    return points;
+  }
+
+  function addNode(points, node) {
+    if (!node) return;
+    addBounds(points, node.bounds);
+    addNode(points, node.q0);
+    addNode(points, node.q1);
+    addNode(points, node.q2);
+    addNode(points, node.q3);
+    addNode(points, node.q4);
+    addNode(points, node.q5);
+    addNode(points, node.q6);
+    addNode(points, node.q7);
+  }
+
+  function createColors(length) {
+    var arr = new Float32Array(length);
+    for (var i = 0; i < length; ++i) {
+      arr[i] = 0.5;
+    }
+    return arr;
+  }
+
+  function addBounds(to, bounds) {
+    var left = bounds.x - bounds.half;
+    var right = bounds.x + bounds.half;
+    var top = bounds.y - bounds.half;
+    var bottom = bounds.y + bounds.half;
+    var back = bounds.z - bounds.half;
+    var front = bounds.z + bounds.half;
+
+    // front
+    to.push(left, top, front,
+            right, top, front,
+
+            right, top, front,
+            right, bottom, front,
+
+            right, bottom, front,
+            left, bottom, front,
+
+            left, bottom, front,
+            left, top, front);
+
+    // back:
+    to.push(left, top, back,
+            right, top, back,
+
+            right, top, back,
+            right, bottom, back,
+
+            right, bottom, back,
+            left, bottom, back,
+
+            left, bottom, back,
+            left, top, back);
+
+    // bottom
+    to.push(left, bottom, back,
+            left, bottom, front,
+
+            right, bottom, back,
+            right, bottom, front
+            );
+    // top
+    to.push(left, top, back,
+            left, top, front,
+
+            right, top, back,
+            right, top, front
+            );
   }
 
   function stopEventsListening() {
