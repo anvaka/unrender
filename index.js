@@ -75,6 +75,9 @@ function unrender(container, options) {
 
     particleView.render(coordinates);
 
+    if (hitTest) hitTest.destroy();
+    hitTest = createHitTest(particleView, container);
+
     return api;
   }
 
