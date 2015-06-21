@@ -46,11 +46,12 @@ function unrender(container, options) {
     return hitTest;
   }
 
-  function highlight(indexes, color) {
+  function highlight(indexes, color, scale) {
     color = normalizeColor(color);
     if (!color) color = 0xff0000;
+    if (typeof scale !== 'number') scale = 1;
 
-    particleView.highlight(indexes, color);
+    particleView.highlight(indexes, color, scale);
   }
 
   function createInputHandler() {
