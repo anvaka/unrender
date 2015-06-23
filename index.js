@@ -16,6 +16,7 @@ function unrender(container, options) {
     destroy: destroy,
     scene: getScene,
     camera: getCamera,
+    input: getInput,
     renderer: getRenderer,
     particles: particles,
     hitTest: getHitTest,
@@ -108,6 +109,10 @@ function unrender(container, options) {
 
   function getCamera() {
     return camera;
+  }
+
+  function getInput() {
+    return input;
   }
 
   function createRenderer() {

@@ -19,7 +19,7 @@
   "dependencies": {
     "ngraph.events": "0.0.3",
     "three": "^0.71.0",
-    "three.fly": "^0.1.4",
+    "three.fly": "^0.1.5",
     "yaot": "git+https://github.com/anvaka/yaot.git"
   }
 }
