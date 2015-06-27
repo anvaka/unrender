@@ -1,8 +1,10 @@
 var THREE = require('three');
+var TWEEN = require('tween.js');
 var combineOptions = require('./options.js');
 var createParticleView = require('./lib/particle-view.js');
 var createLineView = require('./lib/line-view.js');
 var createHitTest = require('./lib/hit-test.js');
+var createAutoPilot = require('./lib/auto-pilot.js');
 var flyControls = require('three.fly');
 var normalizeColor = require('./lib/normalize-color.js');
 
@@ -21,7 +23,8 @@ function unrender(container, options) {
     particles: particles,
     hitTest: getHitTest,
     highlight: highlight,
-    lines: drawLines
+    lines: drawLines,
+    lookAt: lookAt
   };
 
   options = combineOptions(options);
@@ -33,9 +36,11 @@ function unrender(container, options) {
   var particleView = createParticleView(scene);
   var lineView = createLineView(scene);
   var input = createInputHandler();
+  var autoPilot = createAutoPilot(camera);
 
   // TODO: This doesn't seem to belong here... Not sure where to put it
   var hitTest = createHitTest(particleView, container);
+  var updateTween = window.performance ? highResTimer : dateTimer;
 
   startEventsListening();
 
@@ -63,11 +68,12 @@ function unrender(container, options) {
     return controls;
   }
 
-  function frame() {
+  function frame(time) {
     lastFrame = requestAnimationFrame(frame);
     renderer.render(scene, camera);
     hitTest.update(scene, camera);
     input.update(0.1);
+    updateTween(time);
   }
 
   function particles(coordinates) {
@@ -149,5 +155,24 @@ function unrender(container, options) {
 
   function drawLines(lines) {
     lineView.draw(lines);
+  }
+
+  function lookAt(index, done, distanceFromTarget) {
+    var points = particleView.coordinates()
+    var pos = {
+      x: points[index],
+      y: points[index + 1],
+      z: points[index + 2]
+    };
+
+    autoPilot.flyTo(pos, done, distanceFromTarget);
+  }
+
+  function highResTimer(time) {
+    TWEEN.update(time);
+  }
+
+  function dateTimer(time) {
+    TWEEN.update(+new Date());
   }
 }
