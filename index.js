@@ -24,6 +24,7 @@ function unrender(container, options) {
     particles: particles,
     hitTest: getHitTest,
     createHighlight: createHighlight,
+    destroyHighlight: destroyHighlight,
     lines: drawLines,
     lookAt: lookAt
   };
@@ -59,6 +60,11 @@ function unrender(container, options) {
 
     allHighlights[highlight.getId()] = highlight;
     return highlight;
+  }
+
+  function destroyHighlight(highlight) {
+    highlight.clear();
+    delete allHighlights[highlight.getId()];
   }
 
   function createInputHandler() {
