@@ -4,6 +4,7 @@ var combineOptions = require('./options.js');
 var createParticleView = require('./lib/particle-view.js');
 var createLineView = require('./lib/line-view.js');
 var createHitTest = require('./lib/hit-test.js');
+var createHighlightInstance = require('./lib/highlight.js');
 var createAutoPilot = require('./lib/auto-pilot.js');
 var flyControls = require('three.fly');
 var normalizeColor = require('./lib/normalize-color.js');
@@ -22,13 +23,14 @@ function unrender(container, options) {
     renderer: getRenderer,
     particles: particles,
     hitTest: getHitTest,
-    highlight: highlight,
+    createHighlight: createHighlight,
     lines: drawLines,
     lookAt: lookAt
   };
 
   options = combineOptions(options);
   var lastFrame;
+  var allHighlights = Object.create(null);
 
   var scene = createScene();
   var camera = createCamera();
@@ -52,12 +54,11 @@ function unrender(container, options) {
     return hitTest;
   }
 
-  function highlight(indexes, color, scale) {
-    color = normalizeColor(color);
-    if (!color) color = 0xff0000;
-    if (typeof scale !== 'number') scale = 1;
+  function createHighlight() {
+    var highlight = createHighlightInstance(scene, particleView);
 
-    particleView.highlight(indexes, color, scale);
+    allHighlights[highlight.getId()] = highlight;
+    return highlight;
   }
 
   function createInputHandler() {
