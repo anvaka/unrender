@@ -160,8 +160,8 @@ function unrender(container, options) {
     renderer.setSize(container.clientWidth, container.clientHeight);
   }
 
-  function drawLines(lines) {
-    lineView.draw(lines);
+  function drawLines(lines, color) {
+    lineView.draw(lines, color);
   }
 
   function lookAt(index, done, distanceFromTarget) {
