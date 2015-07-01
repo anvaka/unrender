@@ -21,16 +21,20 @@ function unrender(container, options) {
     camera: getCamera,
     input: getInput,
     renderer: getRenderer,
+    // todo: this should all be refactored into single particles class.
     particles: particles,
+    getParticleView: getParicleView,
     hitTest: getHitTest,
     createHighlight: createHighlight,
     destroyHighlight: destroyHighlight,
     lines: drawLines,
+    onFrame: onFrame,
     lookAt: lookAt
   };
 
   options = combineOptions(options);
   var lastFrame;
+  var rafCallbacks = [];
   var allHighlights = Object.create(null);
 
   var scene = createScene();
@@ -81,14 +85,22 @@ function unrender(container, options) {
     hitTest.update(scene, camera);
     input.update(0.1);
     updateTween(time);
+
+    for (var i = 0; i < rafCallbacks.length; ++i) {
+      rafCallbacks[i](time);
+    }
+  }
+
+  function getParicleView() {
+    return particleView;
   }
 
   function particles(coordinates) {
+    // todo: this should go away when we refactor this into single view
     if (coordinates === undefined) {
       return particleView.coordinates();
     }
-
-    particleView.render(coordinates);
+    particleView.initWithNewCoordinates(coordinates);
 
     if (hitTest) hitTest.destroy();
     hitTest = createHitTest(particleView, container);
@@ -128,6 +140,16 @@ function unrender(container, options) {
     return input;
   }
 
+  function onFrame(callback) {
+    rafCallbacks.push(callback)
+  }
+
+  function offFrame(callback) {
+    var idx = rafCallbacks.indexOf(callback);
+    if (idx < 0) return;
+    rafCallbacks.splice(idx, 1);
+  }
+
   function createRenderer() {
     var renderer = new THREE.WebGLRenderer({
       antialias: false
@@ -148,7 +170,6 @@ function unrender(container, options) {
     window.addEventListener('resize', onWindowResize, false);
   }
 
-
   function stopEventsListening() {
     window.removeEventListener('resize', onWindowResize, false);
     cancelAnimationFrame(lastFrame);
@@ -165,6 +186,7 @@ function unrender(container, options) {
   }
 
   function lookAt(index, done, distanceFromTarget) {
+    // todo: this should tak x,y,z instead
     var points = particleView.coordinates()
     var pos = {
       x: points[index],
