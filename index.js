@@ -29,7 +29,8 @@ function unrender(container, options) {
     destroyHighlight: destroyHighlight,
     lines: drawLines,
     onFrame: onFrame,
-    lookAt: lookAt
+    lookAt: lookAt,
+    getContainer: getContainer
   };
 
   options = combineOptions(options);
@@ -106,6 +107,10 @@ function unrender(container, options) {
     hitTest = createHitTest(particleView, container);
 
     return api;
+  }
+
+  function getContainer() {
+    return container;
   }
 
   function destroy() {
