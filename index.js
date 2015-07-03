@@ -11,6 +11,7 @@ var normalizeColor = require('./lib/normalize-color.js');
 
 // Expose three.js as well, so simple clients do not have to require it
 unrender.THREE = THREE;
+unrender.TWEEN = TWEEN;
 
 module.exports = unrender;
 
