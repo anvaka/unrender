@@ -44,7 +44,7 @@ function unrender(container, options) {
   var autoPilot = createAutoPilot(camera);
 
   // TODO: This doesn't seem to belong here... Not sure where to put it
-  var hitTest = createHitTest(particleView, container);
+  var hitTest = createHitTest(particleView, container, input);
   var updateTween = window.performance ? highResTimer : dateTimer;
 
   startEventsListening();
@@ -89,7 +89,7 @@ function unrender(container, options) {
     particleView.initWithNewCoordinates(coordinates);
 
     if (hitTest) hitTest.destroy();
-    hitTest = createHitTest(particleView, container);
+    hitTest = createHitTest(particleView, container, input);
 
     return api;
   }
