@@ -27,6 +27,7 @@ function unrender(container, options) {
     hitTest: getHitTest,
     lines: drawLines,
     onFrame: onFrame,
+    offFrame: offFrame,
     lookAt: lookAt,
     getContainer: getContainer
   };
