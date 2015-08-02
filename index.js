@@ -29,6 +29,7 @@ function unrender(container, options) {
     onFrame: onFrame,
     offFrame: offFrame,
     lookAt: lookAt,
+    around: around,
     getContainer: getContainer
   };
 
@@ -174,6 +175,10 @@ function unrender(container, options) {
 
   function drawLines(lines, color) {
     lineView.draw(lines, color);
+  }
+
+  function around(r, x, y, z) {
+    autoPilot.around(r, x, y, z);
   }
 
   function lookAt(index, done, distanceFromTarget) {
