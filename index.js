@@ -62,7 +62,7 @@ function unrender(container, options) {
   function createInputHandler() {
     var controls = flyControls(camera, container, THREE);
     controls.movementSpeed = 200;
-    controls.rollSpeed = 0.20;
+    controls.rollSpeed = 0.065;
 
     return controls;
   }
