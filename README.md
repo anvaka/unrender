@@ -7,7 +7,7 @@ Three.js renderer for large data set of points
 With [npm](https://npmjs.org) do:
 
 ```
-npm install unrender
+npm install https://github.com/anvaka/unrender.git
 ```
 
 # license
