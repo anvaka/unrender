@@ -10,7 +10,7 @@ function combineOptions(options) {
   /**
    * Background of the scene in hexadecimal form. Default value is 0x000000 (black);
    */
-  options.clearColor = clearColor === 'number' ? clearColor : 0x000000;
+  options.clearColor = typeof clearColor === 'number' ? clearColor : 0x000000;
 
   return options;
 }
